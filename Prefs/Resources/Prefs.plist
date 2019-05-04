@@ -225,7 +225,7 @@
 			<key>cell</key>
 			<string>PSSwitchCell</string>
 			<key>default</key>
-			<true/>
+			<false/>
 			<key>defaults</key>
 			<string>me.nepeta.copypasta</string>
 			<key>label</key>
