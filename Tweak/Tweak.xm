@@ -108,6 +108,7 @@ NSInteger style;
         cpaView.playsHapticFeedback = hapticFeedback;
         
         [cpaView recreateBlur];
+        [cpaView refresh];
     }
     
     [cpaView hide:YES animated:NO];

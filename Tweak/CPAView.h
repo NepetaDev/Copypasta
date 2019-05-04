@@ -3,6 +3,8 @@
 @property (nonatomic, retain) UIImage* placeholderImage;
 @property (nonatomic, retain) UIButton* dismissButton;
 @property (nonatomic, retain) UIVisualEffectView* blurView;
+@property (nonatomic, retain) UIView* emptyView;
+@property (nonatomic, retain) UILabel* listEmptyLabel;
 @property (nonatomic, assign) CGFloat tableHeight;
 @property (nonatomic, assign) CGFloat lastHeight;
 @property (nonatomic, assign) CGRect baseFrame;

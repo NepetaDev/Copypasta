@@ -65,7 +65,17 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     self.tableView.layoutMargins = UIEdgeInsetsZero;
     self.tableView.separatorInset = UIEdgeInsetsZero;
-    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0,0,50,30)];
+    
+    self.emptyView = [[UIView alloc] initWithFrame:CGRectMake(0,0,50,100)];
+
+    self.listEmptyLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,50,100)];
+    self.listEmptyLabel.text = @"There are no items in your list. Copy some text from other apps.";
+    self.listEmptyLabel.textAlignment = NSTextAlignmentCenter;
+    self.listEmptyLabel.numberOfLines = 0;
+    self.listEmptyLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    self.listEmptyLabel.font = [self.listEmptyLabel.font fontWithSize:14];
+
+    self.tableView.tableFooterView = self.emptyView;
     
     [self.wrapperView addSubview:self.tableView];
 
@@ -114,6 +124,13 @@
     self.wantsAnimations = YES;
     NSIndexSet *sections = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [self.tableView numberOfSections])];
     [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationAutomatic];
+
+    if (([[[CPAManager sharedInstance] favoriteItems] count] + [[[CPAManager sharedInstance] items] count]) == 0) {
+        self.tableView.tableFooterView = self.listEmptyLabel;
+    } else {
+        self.tableView.tableFooterView = self.emptyView;
+    }
+
     self.wantsAnimations = NO;
 }
 
@@ -123,10 +140,12 @@
     if (self.darkMode) {
         self.backgroundColor = [UIColor blackColor];
         self.dismissButton.tintColor = [UIColor whiteColor];
+        self.listEmptyLabel.textColor = [UIColor whiteColor];
         self.tableView.indicatorStyle = UIScrollViewIndicatorStyleWhite;
     } else {
         self.backgroundColor = [UIColor whiteColor];
         self.dismissButton.tintColor = [UIColor blackColor];
+        self.listEmptyLabel.textColor = [UIColor blackColor];
         self.tableView.indicatorStyle = UIScrollViewIndicatorStyleBlack;
     }
 
