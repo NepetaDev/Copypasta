@@ -33,7 +33,7 @@ UIView *temp = nil;
 %hook CALayer
 
 - (id)actionForKey:(NSString *)key {
-    if ([(UIView *)self.delegate isDescendantOfView:cpaView] && !cpaView.wantsAnimations) return nil;
+    if ([self.delegate respondsToSelector:@selector(isDescendantOfView:)] && [(UIView *)self.delegate isDescendantOfView:cpaView] && !cpaView.wantsAnimations) return nil;
     return %orig;
 }
 
