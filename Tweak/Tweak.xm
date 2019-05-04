@@ -188,6 +188,8 @@ NSInteger style;
     UIKBTree* orig = %orig;
     if (orig && [orig.name isEqualToString:@"Dictation-Key"]) {
         orig.properties[@"KBinteractionType"] = @(0);
+        
+        if (hapticFeedback) AudioServicesPlaySystemSound(1519);
         if (cpaView.isOpenFully) [cpaView hide:!alwaysShowChevron animated:YES];
         else [cpaView show:YES animated:YES];
 
