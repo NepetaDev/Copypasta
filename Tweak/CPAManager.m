@@ -50,7 +50,7 @@
 
 -(void)addItem:(CPAItem *)item {
     if ([_items count] >= self.numberOfItems) {
-        [_items removeObjectsInRange:NSMakeRange(self.numberOfItems-1, [_items count] - 1)];
+        [_items removeObjectsInRange:NSMakeRange(self.numberOfItems - 1, [_items count] - self.numberOfItems + 1)];
     }
 
     [_items insertObject:item atIndex:0];
