@@ -1,4 +1,5 @@
 #import <Cephei/HBPreferences.h>
+#import <AudioToolbox/AudioToolbox.h>
 #import "Tweak.h"
 #import "CPAObserver.h"
 #import "CPAView.h"
@@ -209,6 +210,7 @@ NSInteger style;
         return;
     }
 
+    if (hapticFeedback && !cpaView.isOpenFully) AudioServicesPlaySystemSound(1519);
     [cpaView show:YES animated:YES];
     //else [cpaView hide];
 }
