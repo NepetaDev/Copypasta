@@ -1,0 +1,28 @@
+{
+  "ENABLED" = "Enabled";
+
+  "STYLE" = "Style";
+  "BEHAVIOR" = "Behavior";
+  "USE_BLUR" = "Blur background";
+  "DISMISS_AFTER_PASTE" = "Dismiss after pasting";
+  "SHOW_NAMES" = "Show application names";
+  "SHOW_ICONS" = "Show icons";
+  "HEIGHT" = "Height";
+  "ALWAYS_SHOW_CHEVRON" = "Always show expand button";
+  "OPEN_AUTOMATICALLY" = "Expand automatically";
+  "USE_DICTATION" = "Use dictation button to open";
+  "NUMBER_OF_ITEMS" = "Number of recently copied items to show (favorites don't count)";
+  "AUTOMATIC" = "Automatic";
+  "LIGHT" = "Light";
+  "DARK" = "Dark";
+  "PLACE_UNDER" = "Place under keyboard";
+  "HAPTIC_FEEDBACK" = "Haptic feedback";
+
+  "ARE_YOU_SURE_TO_RESET_PREFS" = "Are you sure you want to reset all your preferences? This cannot be undone.";
+  "OK" = "OK";
+  "CANCEL" = "Cancel";
+  "RESET_PREFS" = "Restore default settings and respring";
+  "SOURCE_CODE" = "Source code";
+  "DONATE_TO_NEPETA" = "Donate to Nepeta";
+  "SUPPORT_ME" = "Support me!";
+}
