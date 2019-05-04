@@ -22,11 +22,10 @@ bool alwaysShowChevron;
 bool useDictation;
 bool placeUnder;
 bool hapticFeedback;
+bool dontPushKeyboardUp;
 CGFloat height;
 NSInteger numberOfItems;
 NSInteger style;
-bool tempDisableThings = false;
-UIView *temp = nil;
 
 %group Copypasta
 
@@ -50,7 +49,7 @@ UIView *temp = nil;
         self.cpaFrame = frame;
     }
 
-    if (enabled && alwaysShowChevron) {
+    if (enabled && alwaysShowChevron && !dontPushKeyboardUp) {
         if (placeUnder) {
             %orig(CGRectMake(frame.origin.x, frame.origin.y - 30, frame.size.width, frame.size.height + 30));
         } else {
@@ -88,7 +87,6 @@ UIView *temp = nil;
 
 -(void)viewDidLoad {
     %orig;
-    temp = self.view;
     if (!enabled) {
         [cpaView hide:YES animated:NO];
         return;
@@ -299,6 +297,7 @@ void reloadItems() {
     [preferences registerInteger:&style default:0 forKey:@"Style"];
     placeUnder = YES;
     alwaysShowChevron = YES;
+    [preferences registerBool:&dontPushKeyboardUp default:NO forKey:@"DontPushKeyboardUp"];
 
     [preferences registerPreferenceChangeBlock:^() {
         [[CPAManager sharedInstance] setNumberOfItems:numberOfItems];

@@ -17,6 +17,7 @@
   "DARK" = "Dark";
   "PLACE_UNDER" = "Place under keyboard";
   "HAPTIC_FEEDBACK" = "Haptic feedback";
+  "DONT_PUSH_KEYBOARD_UP" = "Don't push keyboard up";
 
   "ARE_YOU_SURE_TO_RESET_PREFS" = "Are you sure you want to reset all your preferences? This cannot be undone.";
   "OK" = "OK";
