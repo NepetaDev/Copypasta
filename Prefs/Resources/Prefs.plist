@@ -118,23 +118,7 @@
 			<key>PostNotification</key>
 			<string>me.nepeta.copypasta/ReloadPrefs</string>
 		</dict>
-		<!--<dict>
-			<key>cell</key>
-			<string>PSSwitchCell</string>
-			<key>default</key>
-			<true/>
-			<key>defaults</key>
-			<string>me.nepeta.copypasta</string>
-			<key>label</key>
-			<string>ALWAYS_SHOW_CHEVRON</string>
-			<key>key</key>
-			<string>AlwaysShowChevron</string>
-			<key>alternateColors</key>
-			<true/>
-			<key>PostNotification</key>
-			<string>me.nepeta.copypasta/ReloadPrefs</string>
-		</dict>
-		<dict>
+		<!-- <dict>
 			<key>cell</key>
 			<string>PSSwitchCell</string>
 			<key>default</key>
@@ -149,7 +133,7 @@
 			<true/>
 			<key>PostNotification</key>
 			<string>me.nepeta.copypasta/ReloadPrefs</string>
-		</dict>-->
+		</dict> -->
 
 		<dict>
 			<key>cell</key>

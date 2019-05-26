@@ -39,46 +39,13 @@ NSInteger style;
 
 %end
 
-%hook UIInputSetHostView
+%hook UIInputViewSetPlacement_GenericApplicator
 
-%property (nonatomic, assign) CGRect cpaFrame;
-%property (nonatomic, assign) BOOL cpaHasFrame;
-
--(void)setFrame:(CGRect)frame {
-    if (frame.origin.y > 0) {
-        self.cpaHasFrame = TRUE;
-        self.cpaFrame = frame;
-    }
-
-    if (enabled && alwaysShowChevron && !dontPushKeyboardUp) {
-        if (placeUnder) {
-            %orig(CGRectMake(frame.origin.x, frame.origin.y - 30, frame.size.width, frame.size.height + 30));
-        } else {
-            %orig(CGRectMake(frame.origin.x, frame.origin.y - 60, frame.size.width, frame.size.height + 60));
-        }
-    } else {
-        %orig;
-    }
-}
-
--(void)layoutSubviews {
+-(void)checkVerticalConstraint {
     %orig;
-    if (!enabled || !alwaysShowChevron) return;
-    
-    if (placeUnder) {
-        for (UIView *view in [self subviews]) {
-            view.frame = CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, view.frame.size.height);
-        }
-    } else {
-        for (UIView *view in [self subviews]) {
-            if ([view isKindOfClass:%c(CKMessageEntryView)]) {
-                cpaView.baseFrame = CGRectMake(0, self.superview.bounds.size.height - self.frame.size.height + 110, self.superview.bounds.size.width, 0);
-                continue;
-            }
-            if ([view isKindOfClass:%c(UIKBKeyView)]) continue;
-            if ([view isKindOfClass:%c(CPAView)]) continue;
-            view.frame = CGRectMake(view.frame.origin.x, view.frame.origin.y + 30, view.frame.size.width, view.frame.size.height);
-        }
+    if (enabled && !dontPushKeyboardUp) {
+        NSLayoutConstraint *constraint = [self valueForKey:@"_verticalConstraint"];
+        constraint.constant = -30;
     }
 }
 
@@ -127,9 +94,9 @@ NSInteger style;
     [self cpaRepositionEverything];
 }
 
--(void)_updatePlacementWithPlacement:(UIInputViewSetPlacement *)arg1 {
+-(void)_updatePlacementWithPlacement:(UIInputViewSetPlacement *)placement {
     %orig;
-    if (enabled && [arg1 showsKeyboard]) {
+    if (enabled && [placement showsKeyboard]) {
         if (style == 0) {
             cpaView.darkMode = ![self.hostView _lightStyleRenderConfig];
             [cpaView recreateBlur];
@@ -160,13 +127,9 @@ NSInteger style;
     if (!enabled) return;
     if (placeUnder) {
         cpaView.baseFrame = CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, 0);
-        if (alwaysShowChevron) {
-            cpaView.tableHeight = self.hostView.frame.size.height;
-            if (!self.hostView.cpaHasFrame) self.hostView.frame = self.hostView.frame;
-            else self.hostView.frame = self.hostView.cpaFrame;
-        }
+        if (alwaysShowChevron) cpaView.tableHeight = self.hostView.frame.size.height - 30;
     } else {
-        if (alwaysShowChevron) cpaView.baseFrame = CGRectMake(0, self.view.bounds.size.height - self.hostView.frame.size.height + 60, self.view.bounds.size.width, 0);
+        if (alwaysShowChevron) cpaView.baseFrame = CGRectMake(0, self.view.bounds.size.height - self.hostView.frame.size.height - 15, self.view.bounds.size.width, 0);
         else cpaView.baseFrame = CGRectMake(0, self.view.bounds.size.height - self.hostView.frame.size.height, self.view.bounds.size.width, 0);
     }
 }
@@ -300,6 +263,7 @@ void reloadItems() {
     [preferences registerBool:&useDictation default:NO forKey:@"UseDictation"];
     [preferences registerBool:&hapticFeedback default:YES forKey:@"HapticFeedback"];
     [preferences registerInteger:&style default:0 forKey:@"Style"];
+    //[preferences registerBool:&placeUnder default:YES forKey:@"PlaceUnder"];
     placeUnder = YES;
     alwaysShowChevron = YES;
     [preferences registerBool:&dontPushKeyboardUp default:NO forKey:@"DontPushKeyboardUp"];

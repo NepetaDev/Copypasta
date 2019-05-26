@@ -14,23 +14,7 @@
 
 @end
 
-@interface UIInputWindowController : UIViewController
-
-@property (nonatomic,retain) NSLayoutConstraint * inputViewHeightConstraint;
-@property (nonatomic,readonly) UIInputSetHostView * hostView; 
--(void)updateInputAssistantView:(id)arg1 ;
--(void)candidateBarWillChangeHeight:(double)arg1 withDuration:(double)arg2 ;
--(UIView *)_inputView;
--(UIView *)_inputAccessoryView;
--(UIView *)_inputAssistantView;
--(void)cpaRepositionEverything;
-
-@end
-
-@interface UIKeyboardImpl : UIView
-
-+(id)activeInstance;
--(void)insertText:(NSString *)text;
+@interface UIInputViewSetPlacement_GenericApplicator : NSObject
 
 @end
 
@@ -58,5 +42,27 @@
 - (bool)showsKeyboard;
 - (id)verticalConstraintForInputViewSet:(id)arg1 hostView:(id)arg2 containerView:(id)arg3;
 - (id)widthConstraintForInputViewSet:(id)arg1 hostView:(id)arg2 containerView:(id)arg3;
+
+@end
+
+@interface UIInputWindowController : UIViewController
+
+@property (nonatomic,retain) NSLayoutConstraint * inputViewHeightConstraint;
+@property (nonatomic,readonly) UIInputSetHostView * hostView; 
+@property (nonatomic,retain) UIInputViewSetPlacement * placement;  
+@property (retain,readonly) UIView * containerView; 
+-(void)updateInputAssistantView:(id)arg1 ;
+-(void)candidateBarWillChangeHeight:(double)arg1 withDuration:(double)arg2 ;
+-(UIView *)_inputView;
+-(UIView *)_inputAccessoryView;
+-(UIView *)_inputAssistantView;
+-(void)cpaRepositionEverything;
+
+@end
+
+@interface UIKeyboardImpl : UIView
+
++(id)activeInstance;
+-(void)insertText:(NSString *)text;
 
 @end
