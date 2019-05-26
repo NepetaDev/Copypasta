@@ -123,9 +123,9 @@ NSInteger placement;
             [cpaView recreateBlur];
         }
 
-        [self cpaRepositionEverything];
         [self.hostView setNeedsLayout];
         [self.hostView layoutIfNeeded];
+        [self cpaRepositionEverything];
 
         if (alwaysShowChevron || openAutomatically) [cpaView show:openAutomatically animated:NO];
     } else {
