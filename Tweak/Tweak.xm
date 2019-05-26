@@ -29,6 +29,8 @@ NSInteger numberOfItems;
 NSInteger style;
 NSInteger placement;
 
+CGFloat lastContentHeight = 0;
+
 %group Copypasta
 
 %hook CALayer
@@ -51,12 +53,13 @@ NSInteger placement;
 
 %end
 
-%hook UIInputViewSetPlacement
+%hook UIInputViewSetPlacementOnScreen
 
 -(CGRect)remoteIntrinsicContentSizeForInputViewInSet:(id)arg1 includingIAV:(BOOL)arg2 {
     CGRect orig = %orig;
     if (enabled && !dontPushKeyboardUp && !placeUnder && alwaysShowChevron && orig.size.height != 0) {
         orig.size.height += 30;
+        if (!arg2) lastContentHeight = orig.size.height;
     }
     return orig;
 }
@@ -113,13 +116,6 @@ NSInteger placement;
     } else {
         [[self applicator] cpaConstraint:NO];
     }
-    
-    [self cpaRepositionEverything];
-}
-
--(void)setAccessoryViewVisible:(BOOL)arg1 delay:(double)arg2 {
-    %orig;
-    [self cpaRepositionEverything];
 }
 
 -(void)_updatePlacementWithPlacement:(UIInputViewSetPlacement *)placement {
@@ -130,19 +126,10 @@ NSInteger placement;
             [cpaView recreateBlur];
         }
 
-        [self.hostView setNeedsLayout];
-        [self.hostView layoutIfNeeded];
-        [self cpaRepositionEverything];
-
         if (alwaysShowChevron || openAutomatically) [cpaView show:openAutomatically animated:NO];
     } else {
         [cpaView hide:YES animated:NO];
     }
-}
-
--(void)viewWillLayoutSubviews {
-    %orig;
-    [self cpaRepositionEverything];
 }
 
 -(void)viewDidLayoutSubviews {
@@ -153,15 +140,15 @@ NSInteger placement;
 %new
 -(void)cpaRepositionEverything {
     if (!enabled) return;
+
     if (placeUnder) {
         cpaView.baseFrame = CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, 0);
         if (alwaysShowChevron) cpaView.tableHeight = self.hostView.frame.size.height - 15;
     } else {
-        CGFloat accessoryHeight = 0;
-        if ([self _inputAccessoryView] && ![self _inputAccessoryView].hidden) accessoryHeight = [self _inputAccessoryView].frame.size.height;
+        CGFloat y = self.containerView.frame.origin.y + self.hostView.frame.origin.y + self.hostView.frame.size.height - lastContentHeight;
 
-        if (alwaysShowChevron) cpaView.baseFrame = CGRectMake(0, self.hostView.frame.origin.y + accessoryHeight + 30, self.view.bounds.size.width, 0);
-        else cpaView.baseFrame = CGRectMake(0, self.view.bounds.size.height - self.hostView.frame.size.height, self.view.bounds.size.width, 0);
+        if (alwaysShowChevron) cpaView.baseFrame = CGRectMake(0, y + 30, self.view.bounds.size.width, 0);
+        else cpaView.baseFrame = CGRectMake(0, y, self.view.bounds.size.width, 0);
     }
 }
 
