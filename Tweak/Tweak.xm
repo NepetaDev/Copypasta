@@ -153,7 +153,7 @@ NSInteger placement;
         CGFloat accessoryHeight = 0;
         if ([self _inputAccessoryView]) accessoryHeight = [self _inputAccessoryView].frame.size.height;
 
-        if (alwaysShowChevron) cpaView.baseFrame = CGRectMake(0, self.view.bounds.size.height - self.hostView.frame.size.height + accessoryHeight + 30, self.view.bounds.size.width, 0);
+        if (alwaysShowChevron) cpaView.baseFrame = CGRectMake(0, self.hostView.frame.origin.y + accessoryHeight + 30, self.view.bounds.size.width, 0);
         else cpaView.baseFrame = CGRectMake(0, self.view.bounds.size.height - self.hostView.frame.size.height, self.view.bounds.size.width, 0);
     }
 }
