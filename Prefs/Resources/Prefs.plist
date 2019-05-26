@@ -118,7 +118,7 @@
 			<key>PostNotification</key>
 			<string>me.nepeta.copypasta/ReloadPrefs</string>
 		</dict>
-		<!-- <dict>
+		<dict>
 			<key>cell</key>
 			<string>PSSwitchCell</string>
 			<key>default</key>
@@ -133,7 +133,7 @@
 			<true/>
 			<key>PostNotification</key>
 			<string>me.nepeta.copypasta/ReloadPrefs</string>
-		</dict> -->
+		</dict>
 
 		<dict>
 			<key>cell</key>

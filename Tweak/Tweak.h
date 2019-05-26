@@ -11,6 +11,7 @@
 @property (nonatomic, assign) CGRect cpaFrame;
 @property (nonatomic, assign) BOOL cpaHasFrame;
 -(BOOL)_lightStyleRenderConfig;
+-(id)_rootInputWindowController;
 
 @end
 

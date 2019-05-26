@@ -39,13 +39,30 @@ NSInteger style;
 
 %end
 
+%hook UIInputSetHostView
+
+-(void)layoutSubviews {
+    %orig;
+
+    if (![self _rootInputWindowController]) return;
+    UIInputWindowController *controller = [self _rootInputWindowController];
+
+    for (UIView *view in [self subviews]) {
+        if (view == [controller _inputAccessoryView]) continue;
+        view.frame = CGRectMake(view.frame.origin.x, view.frame.origin.y + 30, view.frame.size.width, view.frame.size.height);
+    }
+}
+
+%end
+
 %hook UIInputViewSetPlacement_GenericApplicator
 
 -(void)checkVerticalConstraint {
     %orig;
     if (enabled && !dontPushKeyboardUp) {
         NSLayoutConstraint *constraint = [self valueForKey:@"_verticalConstraint"];
-        constraint.constant = -30;
+        if (placeUnder) constraint.constant = -30;
+        else constraint.constant = -60;
     }
 }
 
@@ -129,7 +146,10 @@ NSInteger style;
         cpaView.baseFrame = CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, 0);
         if (alwaysShowChevron) cpaView.tableHeight = self.hostView.frame.size.height - 30;
     } else {
-        if (alwaysShowChevron) cpaView.baseFrame = CGRectMake(0, self.view.bounds.size.height - self.hostView.frame.size.height - 15, self.view.bounds.size.width, 0);
+        CGFloat accessoryHeight = 0;
+        if ([self _inputAccessoryView]) accessoryHeight = [self _inputAccessoryView].frame.size.height;
+
+        if (alwaysShowChevron) cpaView.baseFrame = CGRectMake(0, self.view.bounds.size.height - self.hostView.frame.size.height + accessoryHeight, self.view.bounds.size.width, 0);
         else cpaView.baseFrame = CGRectMake(0, self.view.bounds.size.height - self.hostView.frame.size.height, self.view.bounds.size.width, 0);
     }
 }
@@ -263,14 +283,12 @@ void reloadItems() {
     [preferences registerBool:&useDictation default:NO forKey:@"UseDictation"];
     [preferences registerBool:&hapticFeedback default:YES forKey:@"HapticFeedback"];
     [preferences registerInteger:&style default:0 forKey:@"Style"];
-    //[preferences registerBool:&placeUnder default:YES forKey:@"PlaceUnder"];
-    placeUnder = YES;
+    [preferences registerBool:&placeUnder default:YES forKey:@"PlaceUnder"];
     alwaysShowChevron = YES;
     [preferences registerBool:&dontPushKeyboardUp default:NO forKey:@"DontPushKeyboardUp"];
 
     [preferences registerPreferenceChangeBlock:^() {
         [[CPAManager sharedInstance] setNumberOfItems:numberOfItems];
-        placeUnder = !useDictation;
         alwaysShowChevron = !useDictation;
         if (!cpaView) return;
 
