@@ -17,6 +17,8 @@
 
 @interface UIInputViewSetPlacement_GenericApplicator : NSObject
 
+-(void)cpaConstraint:(BOOL)show;
+
 @end
 
 @interface UIInputViewSetPlacement : NSObject
@@ -48,6 +50,7 @@
 
 @interface UIInputWindowController : UIViewController
 
+@property (nonatomic,retain) UIInputViewSetPlacement_GenericApplicator *applicator;
 @property (nonatomic,retain) NSLayoutConstraint * inputViewHeightConstraint;
 @property (nonatomic,readonly) UIInputSetHostView * hostView; 
 @property (nonatomic,retain) UIInputViewSetPlacement * placement;  
@@ -58,6 +61,7 @@
 -(UIView *)_inputAccessoryView;
 -(UIView *)_inputAssistantView;
 -(void)cpaRepositionEverything;
+-(void)resetVerticalConstraint;
 
 @end
 

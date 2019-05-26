@@ -39,31 +39,25 @@ NSInteger style;
 
 %end
 
-%hook UIInputSetHostView
+%hook UIInputViewSetPlacement_GenericApplicator
 
--(void)layoutSubviews {
-    %orig;
-
-    if (![self _rootInputWindowController]) return;
-    UIInputWindowController *controller = [self _rootInputWindowController];
-
-    for (UIView *view in [self subviews]) {
-        if (view == [controller _inputAccessoryView]) continue;
-        view.frame = CGRectMake(view.frame.origin.x, view.frame.origin.y + 30, view.frame.size.width, view.frame.size.height);
-    }
+%new
+-(void)cpaConstraint:(BOOL)show {
+    NSLayoutConstraint *constraint = [self valueForKey:@"_verticalConstraint"];
+    if (show && placeUnder && !dontPushKeyboardUp && alwaysShowChevron) constraint.constant = -30;
+    else constraint.constant = 0;
 }
 
 %end
 
-%hook UIInputViewSetPlacement_GenericApplicator
+%hook UIInputViewSetPlacement
 
--(void)checkVerticalConstraint {
-    %orig;
-    if (enabled && !dontPushKeyboardUp) {
-        NSLayoutConstraint *constraint = [self valueForKey:@"_verticalConstraint"];
-        if (placeUnder) constraint.constant = -30;
-        else constraint.constant = -60;
+-(CGRect)remoteIntrinsicContentSizeForInputViewInSet:(id)arg1 includingIAV:(BOOL)arg2 {
+    CGRect orig = %orig;
+    if (enabled && !dontPushKeyboardUp && !placeUnder && orig.size.height != 0) {
+        orig.size.height += 30;
     }
+    return orig;
 }
 
 %end
@@ -111,6 +105,15 @@ NSInteger style;
     [self cpaRepositionEverything];
 }
 
+-(void)updateVisibilityConstraintsForPlacement:(UIInputViewSetPlacement *)placement {
+    %orig;
+    if (enabled && [placement showsKeyboard]) {
+        [[self applicator] cpaConstraint:YES];
+    } else {
+        [[self applicator] cpaConstraint:NO];
+    }
+}
+
 -(void)_updatePlacementWithPlacement:(UIInputViewSetPlacement *)placement {
     %orig;
     if (enabled && [placement showsKeyboard]) {
@@ -144,12 +147,12 @@ NSInteger style;
     if (!enabled) return;
     if (placeUnder) {
         cpaView.baseFrame = CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, 0);
-        if (alwaysShowChevron) cpaView.tableHeight = self.hostView.frame.size.height - 30;
+        if (alwaysShowChevron) cpaView.tableHeight = self.hostView.frame.size.height;
     } else {
         CGFloat accessoryHeight = 0;
         if ([self _inputAccessoryView]) accessoryHeight = [self _inputAccessoryView].frame.size.height;
 
-        if (alwaysShowChevron) cpaView.baseFrame = CGRectMake(0, self.view.bounds.size.height - self.hostView.frame.size.height + accessoryHeight, self.view.bounds.size.width, 0);
+        if (alwaysShowChevron) cpaView.baseFrame = CGRectMake(0, self.view.bounds.size.height - self.hostView.frame.size.height + accessoryHeight + 30, self.view.bounds.size.width, 0);
         else cpaView.baseFrame = CGRectMake(0, self.view.bounds.size.height - self.hostView.frame.size.height, self.view.bounds.size.width, 0);
     }
 }
