@@ -113,6 +113,13 @@ NSInteger placement;
     } else {
         [[self applicator] cpaConstraint:NO];
     }
+    
+    [self cpaRepositionEverything];
+}
+
+-(void)setAccessoryViewVisible:(BOOL)arg1 delay:(double)arg2 {
+    %orig;
+    [self cpaRepositionEverything];
 }
 
 -(void)_updatePlacementWithPlacement:(UIInputViewSetPlacement *)placement {
@@ -151,7 +158,7 @@ NSInteger placement;
         if (alwaysShowChevron) cpaView.tableHeight = self.hostView.frame.size.height - 15;
     } else {
         CGFloat accessoryHeight = 0;
-        if ([self _inputAccessoryView]) accessoryHeight = [self _inputAccessoryView].frame.size.height;
+        if ([self _inputAccessoryView] && ![self _inputAccessoryView].hidden) accessoryHeight = [self _inputAccessoryView].frame.size.height;
 
         if (alwaysShowChevron) cpaView.baseFrame = CGRectMake(0, self.hostView.frame.origin.y + accessoryHeight + 30, self.view.bounds.size.width, 0);
         else cpaView.baseFrame = CGRectMake(0, self.view.bounds.size.height - self.hostView.frame.size.height, self.view.bounds.size.width, 0);
