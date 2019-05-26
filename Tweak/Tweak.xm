@@ -27,6 +27,7 @@ bool dontPushKeyboardUp;
 CGFloat height;
 NSInteger numberOfItems;
 NSInteger style;
+NSInteger placement;
 
 %group Copypasta
 
@@ -54,7 +55,7 @@ NSInteger style;
 
 -(CGRect)remoteIntrinsicContentSizeForInputViewInSet:(id)arg1 includingIAV:(BOOL)arg2 {
     CGRect orig = %orig;
-    if (enabled && !dontPushKeyboardUp && !placeUnder && orig.size.height != 0) {
+    if (enabled && !dontPushKeyboardUp && !placeUnder && alwaysShowChevron && orig.size.height != 0) {
         orig.size.height += 30;
     }
     return orig;
@@ -283,16 +284,43 @@ void reloadItems() {
     [preferences registerFloat:&height default:150 forKey:@"Height"];
     [preferences registerInteger:&numberOfItems default:10 forKey:@"NumberOfItems"];
     [preferences registerBool:&openAutomatically default:NO forKey:@"OpenAutomatically"];
-    [preferences registerBool:&useDictation default:NO forKey:@"UseDictation"];
     [preferences registerBool:&hapticFeedback default:YES forKey:@"HapticFeedback"];
     [preferences registerInteger:&style default:0 forKey:@"Style"];
-    [preferences registerBool:&placeUnder default:YES forKey:@"PlaceUnder"];
+    [preferences registerInteger:&placement default:0 forKey:@"Placement"];
+    placeUnder = YES;
     alwaysShowChevron = YES;
-    [preferences registerBool:&dontPushKeyboardUp default:NO forKey:@"DontPushKeyboardUp"];
+    dontPushKeyboardUp = NO;
+    useDictation = NO;
 
     [preferences registerPreferenceChangeBlock:^() {
         [[CPAManager sharedInstance] setNumberOfItems:numberOfItems];
-        alwaysShowChevron = !useDictation;
+        switch (placement) {
+            case 0:
+                placeUnder = YES;
+                alwaysShowChevron = YES;
+                dontPushKeyboardUp = NO;
+                useDictation = NO;
+                break;
+            case 1:
+                placeUnder = YES;
+                alwaysShowChevron = YES;
+                dontPushKeyboardUp = YES;
+                useDictation = NO;
+                break;
+            case 2:
+                placeUnder = NO;
+                alwaysShowChevron = YES;
+                dontPushKeyboardUp = NO;
+                useDictation = NO;
+                break;
+            case 3:
+                placeUnder = NO;
+                alwaysShowChevron = NO;
+                dontPushKeyboardUp = NO;
+                useDictation = YES;
+                break;
+        }
+        
         if (!cpaView) return;
 
         if (style == 1) cpaView.darkMode = false;

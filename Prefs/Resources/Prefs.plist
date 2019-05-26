@@ -42,6 +42,43 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
+			<string>PLACEMENT</string>
+			<key>footerText</key>
+			<string>PLACEMENT_INFO</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSegmentCell</string>
+			<key>default</key>
+			<integer>0</integer>
+			<key>defaults</key>
+			<string>me.nepeta.copypasta</string>
+			<key>key</key>
+			<string>Placement</string>
+			<key>validValues</key>
+			<array>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>2</integer>
+				<integer>3</integer>
+			</array>
+			<key>validTitles</key>
+			<array>
+				<string>BOTTOM</string>
+				<string>BOTTOM_NO_PUSH</string>
+				<string>TOP</string>
+				<string>DICTATION</string>
+			</array>
+			<key>alignment</key>
+			<string>4</string>
+			<key>PostNotification</key>
+			<string>me.nepeta.copypasta/ReloadPrefs</string>
+		</dict>
+
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
 			<string>STYLE</string>
 		</dict>
 		<dict>
@@ -118,22 +155,6 @@
 			<key>PostNotification</key>
 			<string>me.nepeta.copypasta/ReloadPrefs</string>
 		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSSwitchCell</string>
-			<key>default</key>
-			<false/>
-			<key>defaults</key>
-			<string>me.nepeta.copypasta</string>
-			<key>label</key>
-			<string>PLACE_UNDER</string>
-			<key>key</key>
-			<string>PlaceUnder</string>
-			<key>alternateColors</key>
-			<true/>
-			<key>PostNotification</key>
-			<string>me.nepeta.copypasta/ReloadPrefs</string>
-		</dict>
 
 		<dict>
 			<key>cell</key>
@@ -152,22 +173,6 @@
 			<string>DISMISS_AFTER_PASTE</string>
 			<key>key</key>
 			<string>DismissAfterPaste</string>
-			<key>alternateColors</key>
-			<true/>
-			<key>PostNotification</key>
-			<string>me.nepeta.copypasta/ReloadPrefs</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSSwitchCell</string>
-			<key>default</key>
-			<false/>
-			<key>defaults</key>
-			<string>me.nepeta.copypasta</string>
-			<key>label</key>
-			<string>USE_DICTATION</string>
-			<key>key</key>
-			<string>UseDictation</string>
 			<key>alternateColors</key>
 			<true/>
 			<key>PostNotification</key>
@@ -200,22 +205,6 @@
 			<string>HAPTIC_FEEDBACK</string>
 			<key>key</key>
 			<string>HapticFeedback</string>
-			<key>alternateColors</key>
-			<true/>
-			<key>PostNotification</key>
-			<string>me.nepeta.copypasta/ReloadPrefs</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSSwitchCell</string>
-			<key>default</key>
-			<false/>
-			<key>defaults</key>
-			<string>me.nepeta.copypasta</string>
-			<key>label</key>
-			<string>DONT_PUSH_KEYBOARD_UP</string>
-			<key>key</key>
-			<string>DontPushKeyboardUp</string>
 			<key>alternateColors</key>
 			<true/>
 			<key>PostNotification</key>
